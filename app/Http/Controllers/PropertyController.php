@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use App\Property;
 
 class PropertyController extends Controller
 {
@@ -15,7 +16,8 @@ class PropertyController extends Controller
      */
     public function index()
     {
-        //
+        //dd(Property::all());
+        return Property::all();
     }
 
     /**
@@ -36,7 +38,7 @@ class PropertyController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return response()->json(Property::create($request->all()));
     }
 
     /**
@@ -81,6 +83,8 @@ class PropertyController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Property::find($id)->delete();
+
+        return 'deleted';
     }
 }

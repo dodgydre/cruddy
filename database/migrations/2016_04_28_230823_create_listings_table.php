@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePropertiesTable extends Migration
+class CreateListingsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,10 +12,11 @@ class CreatePropertiesTable extends Migration
      */
     public function up()
     {
-        Schema::create('properties', function (Blueprint $table) {
+        Schema::create('listings', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('street');
-            $table->string('postcode', 6);
+            $table->integer('property_id');
+            $table->decimal('price',10,2);
+            $table->date('date');
             $table->timestamps();
         });
     }
@@ -27,6 +28,6 @@ class CreatePropertiesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('properties');
+        Schema::drop('listings');
     }
 }

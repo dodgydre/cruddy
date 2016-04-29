@@ -14,3 +14,11 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::auth();
+
+Route::get('/home', 'HomeController@index');
+
+Route::get('/api/properties', 'PropertyController@index');
+Route::post('/api/properties', 'PropertyController@store');
+Route::delete('/api/properties/{id}', 'PropertyController@destroy');
