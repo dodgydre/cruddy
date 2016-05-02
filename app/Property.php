@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Property extends Model
 {
-    protected $fillable = ['street', 'postcode'];
+    protected $fillable = ['street', 'postcode', 'mls_id', 'hyperlink'];
 
     public function Listings()
     {

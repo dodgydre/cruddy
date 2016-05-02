@@ -16,6 +16,8 @@ class CreatePropertiesTable extends Migration
             $table->increments('id');
             $table->string('street');
             $table->string('postcode', 6);
+            $table->string('mls_id')->nullable();
+            $table->string('hyperlink')->nullable();
             $table->timestamps();
         });
     }

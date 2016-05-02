@@ -1,5 +1,8 @@
 var Vue = require('vue');
 Vue.use(require('vue-resource'));
+Vue.use(require('vue-validator'));
+
+Vue.config.debug = true;
 Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#token').getAttribute('value');
 
 var vm = new Vue({
@@ -11,7 +14,9 @@ var vm = new Vue({
   data: {
     property: {
       street: '',
-      postcode: ''
+      postcode: '',
+      mls_id: '',
+      hyperlink: ''
     },
     properties: [],
   },
@@ -36,13 +41,14 @@ var vm = new Vue({
 
     addProperty: function() {
       if(this.property.street) {
-        this.$http.post('api/properties/', this.property).then(function(response) {
-          this.properties.push(this.property);
+        var prop_data = this.property;
+        this.$http.post('api/properties/', prop_data).then(function(response) {
+          this.properties.push(prop_data);
           console.log("Property Added!");
         }, function(error) {
           console.log(error);
         });
-        this.property = { street: '', postcode: '' };
+        this.property = { street: '', postcode: '', mls_id: '', hyperlink: '' };
       }
     },
 
@@ -51,7 +57,7 @@ var vm = new Vue({
         //console.log(index);
         this.$http.delete('api/properties/' + property.id).then(function(response) {
           var deletedProperty = this.properties[index];
-          this.properties.$remove(property.id);
+          this.properties.$remove(deletedProperty);
         }, function(error) {
           console.log(error);
         });
