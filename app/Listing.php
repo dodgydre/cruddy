@@ -6,8 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Listing extends Model
 {
-    public function Property()
+
+    protected $fillable = ['price', 'date'];
+
+    public function property()
     {
-      return $this->belongsTo('App\Property')
+      return $this->belongsTo('App\Property');
     }
 }

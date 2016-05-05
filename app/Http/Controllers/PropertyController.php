@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Property;
+use App\Listing;
+use Carbon\Carbon;
 
 class PropertyController extends Controller
 {
@@ -17,7 +19,7 @@ class PropertyController extends Controller
     public function index()
     {
         //dd(Property::all());
-        return Property::all();
+        return Property::orderBy('id', 'desc')->get();
     }
 
     /**
@@ -86,5 +88,21 @@ class PropertyController extends Controller
         Property::find($id)->delete();
 
         return 'deleted';
+    }
+
+
+    public function listingsIndex($prop_id)
+    {
+      return Property::find($prop_id)->listings;
+    }
+    public function listingsStore($prop_id, Request $request)
+    {
+      $listing = new Listing([
+        'price' => $request->price,
+        'date'  => $request->date
+      ]);
+      $property = Property::find($prop_id);
+      return $property->listings()->save($listing);
+
     }
 }

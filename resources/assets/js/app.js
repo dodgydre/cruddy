@@ -7,18 +7,25 @@ Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#token').getAt
 
 var vm = new Vue({
   // We want to target the div with an id of 'events'
-  el: '#properties',
+  el: '#props',
 
   // Here we can register any values or collections that hold data
   // for the application
   data: {
-    property: {
+    prop: {
+      id: '',
       street: '',
       postcode: '',
       mls_id: '',
       hyperlink: ''
     },
-    properties: [],
+    props: [],
+    currentProp: '',
+    listings: [],
+    listing: {
+      price: '',
+      date: new Date().toISOString().substring(0, 10),
+    }
   },
 
   // Anything within the ready function will run when the application loads
@@ -32,7 +39,7 @@ var vm = new Vue({
     fetchProperties: function() {
       this.$http.get('api/properties')
         .then(function(response) {
-          this.properties = response.data;
+          this.props = response.data;
         }, function(error) {
             console.log(error);
           }
@@ -40,30 +47,53 @@ var vm = new Vue({
     },
 
     addProperty: function() {
-      if(this.property.street) {
-        var prop_data = this.property;
+      if(this.prop.street) {
+        var prop_data = this.prop;
         this.$http.post('api/properties/', prop_data).then(function(response) {
-          this.properties.push(prop_data);
+          this.props.push(prop_data);
           console.log("Property Added!");
         }, function(error) {
           console.log(error);
         });
-        this.property = { street: '', postcode: '', mls_id: '', hyperlink: '' };
+        this.prop = { id: '', street: '', postcode: '', mls_id: '', hyperlink: '' };
+        this.fetchProperties();
       }
     },
 
-    deleteProperty: function(index, property) {
+    deleteProperty: function(index, prop) {
       if(confirm("Are you sure you want to delete this Property?")) {
-        //console.log(index);
-        this.$http.delete('api/properties/' + property.id).then(function(response) {
-          var deletedProperty = this.properties[index];
+        this.$http.delete('api/properties/' + prop.id).then(function(response) {
+          var deletedProperty = this.props[index];
           this.properties.$remove(deletedProperty);
         }, function(error) {
           console.log(error);
         });
       }
-    }
+    },
 
+    fetchListings: function(prop) {
+      this.currentProp = prop;
+      this.$http.get('api/' + prop.id + '/listings')
+        .then(function(response) {
+          this.listings = response.data;
+        }, function(error) {
+          console.log(error);
+        }
+      );
+    },
+
+    addListing: function(prop) {
+      if(this.listing.price) {
+        var listing_data = this.listing;
+        this.$http.post('api/' + prop.id + '/listings', listing_data).then(function(response) {
+          this.listings.push(listing_data);
+          console.log("Listing Added!");
+        }, function(error) {
+          console.log(error);
+        });
+        this.listing = { price: '', date: new Date().toISOString().substring(0, 10) };
+      }
+    }
   }
 });
 
