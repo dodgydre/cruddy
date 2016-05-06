@@ -90,19 +90,4 @@ class PropertyController extends Controller
         return 'deleted';
     }
 
-
-    public function listingsIndex($prop_id)
-    {
-      return Property::find($prop_id)->listings;
-    }
-    public function listingsStore($prop_id, Request $request)
-    {
-      $listing = new Listing([
-        'price' => $request->price,
-        'date'  => $request->date
-      ]);
-      $property = Property::find($prop_id);
-      return $property->listings()->save($listing);
-
-    }
 }

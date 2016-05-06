@@ -49,7 +49,7 @@ var vm = new Vue({
     addProperty: function() {
       if(this.prop.street) {
         var prop_data = this.prop;
-        this.$http.post('api/properties/', prop_data).then(function(response) {
+        this.$http.post('api/properties', prop_data).then(function(response) {
           this.props.push(prop_data);
           console.log("Property Added!");
         }, function(error) {
@@ -62,9 +62,9 @@ var vm = new Vue({
 
     deleteProperty: function(index, prop) {
       if(confirm("Are you sure you want to delete this Property?")) {
-        this.$http.delete('api/properties/' + prop.id).then(function(response) {
+        this.$http.delete('api/properties/' + prop.id + '/delete').then(function(response) {
           var deletedProperty = this.props[index];
-          this.properties.$remove(deletedProperty);
+          this.props.$remove(deletedProperty);
         }, function(error) {
           console.log(error);
         });
@@ -92,6 +92,17 @@ var vm = new Vue({
           console.log(error);
         });
         this.listing = { price: '', date: new Date().toISOString().substring(0, 10) };
+      }
+    },
+    
+    deleteListing: function(index, listing) {
+      if(confirm("Are you sure you want to delete this Listing?")) {
+        this.$http.delete('api/listings/' + listing.id + '/delete').then(function(response) {
+          var deletedListing = this.listing[index];
+          this.listings.$remove(deletedListing);
+        }, function(error) {
+          console.log(error);
+        });
       }
     }
   }

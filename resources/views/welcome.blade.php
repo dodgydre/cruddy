@@ -5,7 +5,12 @@
 <div class="container" id="props">
 
   <div class="row">
+    
+    
     <div class="col-sm-6">
+    
+    <!-- Add a Property Panel -->
+    
       <div class="panel panel-default">
         <div class="panel-heading">
           <h3>Add a Property</h3>
@@ -48,6 +53,10 @@
 
       </div>
       <br />
+
+    <!-- Add a Listing Panel -->
+
+
       <div v-if="currentProp == ''">
         No Property Selected
       </div>
@@ -56,6 +65,7 @@
         <ul class="list-group">
           <li class="list-group-item" v-for="listing in listings">
             @{{ listing.date }} : $ @{{ listing.price }}
+            <button class="btn btn-xs btn-danger" v-on:click="deleteListing($index, listing)">Delete Listing</button>
           </li>
         </ul>
         <h3>Add new listing</h3>
@@ -82,7 +92,7 @@
         </validator>
       </div>
 
-    </div>
+    </div> <!-- /.col-sm-6 -->
 
     <!-- Show the Properties -->
     <div class="col-sm-6">

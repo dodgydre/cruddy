@@ -21,7 +21,8 @@ Route::get('/home', 'HomeController@index');
 
 Route::get('/api/properties', 'PropertyController@index');
 Route::post('/api/properties', 'PropertyController@store');
-Route::delete('/api/properties/{id}', 'PropertyController@destroy');
+Route::delete('/api/properties/{id}/delete', 'PropertyController@destroy');
 
 Route::get('/api/{prop_id}/listings', 'PropertyController@listingsIndex');
 Route::post('/api/{prop_id}/listings', 'PropertyController@listingsStore');
+Route::delete('/api/listings/{listing_id}/delete', 'PropertyController@listingsDelete');
